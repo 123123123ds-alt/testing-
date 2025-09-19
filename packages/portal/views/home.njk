@@ -1,0 +1,29 @@
+{% extends "layout/base.njk" %}
+
+{% block content %}
+  <section class="hero">
+    <h1>Manage fulfilment with confidence</h1>
+    <p>
+      Courier Portal gives administrators the tools to onboard shipping partners and enables shippers to
+      create labels, manage tracking events, and export performance reports in seconds.
+    </p>
+    <div class="actions">
+      <a class="button" href="/admin/login">Admin sign in</a>
+      <a class="button secondary" href="/shipper/login">Shipper sign in</a>
+    </div>
+  </section>
+  <section class="feature-grid">
+    <article>
+      <h2>Admin controls</h2>
+      <p>Create and manage shipper accounts, reset credentials, and monitor activity from a single dashboard.</p>
+    </article>
+    <article>
+      <h2>Order lifecycle</h2>
+      <p>Shippers can capture order details, generate compliant shipping labels, and update tracking events.</p>
+    </article>
+    <article>
+      <h2>Reporting ready</h2>
+      <p>Export production-ready CSV reports to share with finance, operations, or customer support teams.</p>
+    </article>
+  </section>
+{% endblock %}

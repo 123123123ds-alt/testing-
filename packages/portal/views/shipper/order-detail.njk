@@ -1,0 +1,94 @@
+{% extends "layout/base.njk" %}
+
+{% block content %}
+  <section class="card">
+    <div class="section-heading">
+      <div>
+        <h1>Order {{ order.reference }}</h1>
+        <p>Status: <strong>{{ order.status }}</strong></p>
+      </div>
+      <div class="actions">
+        <a class="button" href="/shipper/orders/{{ order.id }}/label" target="_blank">Print label</a>
+      </div>
+    </div>
+    <dl class="details-grid">
+      <div>
+        <dt>Tracking number</dt>
+        <dd>{{ order.trackingNumber or 'Pending' }}</dd>
+      </div>
+      <div>
+        <dt>Created</dt>
+        <dd>{{ formatDate(order.createdAt) }}</dd>
+      </div>
+      <div>
+        <dt>Destination</dt>
+        <dd>
+          {{ order.destinationAddress1 }}<br />
+          {% if order.destinationAddress2 %}{{ order.destinationAddress2 }}<br />{% endif %}
+          {{ order.destinationCity }}{% if order.destinationState %}, {{ order.destinationState }}{% endif %}
+          {% if order.destinationPostalCode %}<br />{{ order.destinationPostalCode }}{% endif %}<br />
+          {{ order.destinationCountry }}
+        </dd>
+      </div>
+      <div>
+        <dt>Weight</dt>
+        <dd>{{ order.packageWeight }} kg</dd>
+      </div>
+      <div>
+        <dt>Dimensions</dt>
+        <dd>
+          {% if order.packageLength or order.packageWidth or order.packageHeight %}
+            {{ order.packageLength or '—' }} × {{ order.packageWidth or '—' }} × {{ order.packageHeight or '—' }} cm
+          {% else %}
+            —
+          {% endif %}
+        </dd>
+      </div>
+      <div>
+        <dt>Service</dt>
+        <dd>{{ order.serviceLevel or '—' }}</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section>
+    <h2>Tracking history</h2>
+    {% if events|length == 0 %}
+      <p class="empty-state">No tracking updates yet.</p>
+    {% else %}
+      <ul class="timeline">
+        {% for event in events %}
+          <li>
+            <time>{{ formatDate(event.occurredAt) }}</time>
+            <div>
+              <strong>{{ event.status }}</strong>
+              {% if event.description %}
+                <p>{{ event.description }}</p>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </section>
+
+  <section class="card">
+    <h2>Add tracking event</h2>
+    <form method="post" action="/shipper/orders/{{ order.id }}/events" class="form-grid">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+      <label>
+        Status
+        <input type="text" name="status" required />
+      </label>
+      <label>
+        Description
+        <textarea name="description" rows="3"></textarea>
+      </label>
+      <label>
+        Event time
+        <input type="datetime-local" name="occurredAt" required />
+      </label>
+      <button type="submit" class="button">Record event</button>
+    </form>
+  </section>
+{% endblock %}

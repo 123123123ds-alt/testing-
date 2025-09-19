@@ -2,3 +2,9 @@ node_modules
 .DS_Store
 dist
 coverage
+
+# Portal build artifacts
+packages/portal/dist
+packages/portal/node_modules
+portal.sqlite
+sessions/
