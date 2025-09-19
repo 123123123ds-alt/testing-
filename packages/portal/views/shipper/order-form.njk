@@ -1,0 +1,71 @@
+{% extends "layout/base.njk" %}
+
+{% block content %}
+  <section class="card">
+    <h1>Create order</h1>
+    <form method="post" action="/shipper/orders/new" class="form-grid">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+      <label>
+        Reference number
+        <input type="text" name="reference" required />
+      </label>
+      <label>
+        Recipient name
+        <input type="text" name="recipientName" required />
+      </label>
+      <label>
+        Recipient email
+        <input type="email" name="recipientEmail" />
+      </label>
+      <label>
+        Recipient phone
+        <input type="tel" name="recipientPhone" />
+      </label>
+      <label>
+        Address line 1
+        <input type="text" name="destinationAddress1" required />
+      </label>
+      <label>
+        Address line 2
+        <input type="text" name="destinationAddress2" />
+      </label>
+      <label>
+        City
+        <input type="text" name="destinationCity" required />
+      </label>
+      <label>
+        State / Province
+        <input type="text" name="destinationState" />
+      </label>
+      <label>
+        Postal code
+        <input type="text" name="destinationPostalCode" />
+      </label>
+      <label>
+        Country code
+        <input type="text" name="destinationCountry" required maxlength="2" />
+      </label>
+      <label>
+        Package weight (kg)
+        <input type="number" name="packageWeight" min="0" step="0.01" required />
+      </label>
+      <label>
+        Package length (cm)
+        <input type="number" name="packageLength" min="0" step="0.1" />
+      </label>
+      <label>
+        Package width (cm)
+        <input type="number" name="packageWidth" min="0" step="0.1" />
+      </label>
+      <label>
+        Package height (cm)
+        <input type="number" name="packageHeight" min="0" step="0.1" />
+      </label>
+      <label>
+        Service level
+        <input type="text" name="serviceLevel" />
+      </label>
+      <button type="submit" class="button">Create order</button>
+    </form>
+  </section>
+{% endblock %}

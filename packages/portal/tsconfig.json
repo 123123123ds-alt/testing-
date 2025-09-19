@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "module": "CommonJS",
+    "target": "ES2021",
+    "moduleResolution": "Node",
+    "types": ["node", "express"],
+    "baseUrl": "./"
+  },
+  "include": ["src/**/*", "tests/**/*", "types/**/*"],
+  "exclude": ["dist"]
+}

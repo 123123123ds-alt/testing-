@@ -1,0 +1,70 @@
+{% extends "layout/base.njk" %}
+
+{% block content %}
+  <section class="card">
+    <h1>{{ shipper.companyName or shipper.email }}</h1>
+    <p class="subtle">Manage credentials and account status.</p>
+    <form method="post" action="/admin/shippers/{{ shipper.id }}" class="form-grid">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+      <label>
+        Company name
+        <input type="text" name="companyName" required value="{{ shipper.companyName or '' }}" />
+      </label>
+      <label>
+        Contact name
+        <input type="text" name="name" required value="{{ shipper.name or '' }}" />
+      </label>
+      <label>
+        Email address
+        <input type="email" name="email" required value="{{ shipper.email }}" />
+      </label>
+      <label>
+        Phone number
+        <input type="tel" name="phone" required value="{{ shipper.phone or '' }}" />
+      </label>
+      <label>
+        Password
+        <input type="password" name="password" minlength="8" placeholder="Leave blank to keep current password" />
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" name="isActive" {{ shipper.isActive and 'checked' or '' }} />
+        Account is active
+      </label>
+      <button type="submit" class="button">Save changes</button>
+    </form>
+    <form method="post" action="/admin/shippers/{{ shipper.id }}/toggle" class="inline-form">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+      <button type="submit" class="button secondary">{{ shipper.isActive and 'Deactivate account' or 'Activate account' }}</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Recent orders</h2>
+    {% if orders|length == 0 %}
+      <p class="empty-state">This shipper has not created any orders yet.</p>
+    {% else %}
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Reference</th>
+              <th>Status</th>
+              <th>Tracking</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in orders %}
+              <tr>
+                <td>{{ order.reference }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.trackingNumber or 'Pending' }}</td>
+                <td>{{ formatDate(order.createdAt) }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}

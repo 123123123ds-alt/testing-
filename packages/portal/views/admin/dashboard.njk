@@ -1,0 +1,50 @@
+{% extends "layout/base.njk" %}
+
+{% block content %}
+  <section class="page-header">
+    <div>
+      <h1>Admin dashboard</h1>
+      <p>Manage shipper accounts and monitor shipping volume.</p>
+    </div>
+    <a class="button" href="/admin/shippers/new">Create shipper</a>
+  </section>
+
+  {% if shipperSummaries|length == 0 %}
+    <p class="empty-state">No shippers have been onboarded yet.</p>
+  {% else %}
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Contact</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Orders</th>
+            <th>Joined</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for summary in shipperSummaries %}
+            <tr>
+              <td>{{ summary.shipper.companyName or '—' }}</td>
+              <td>{{ summary.shipper.name or '—' }}</td>
+              <td>{{ summary.shipper.email }}</td>
+              <td>
+                {% if summary.shipper.isActive %}
+                  <span class="badge success">Active</span>
+                {% else %}
+                  <span class="badge">Inactive</span>
+                {% endif %}
+              </td>
+              <td>{{ summary.orderCount }}</td>
+              <td>{{ formatDate(summary.shipper.createdAt, false) }}</td>
+              <td><a class="link" href="/admin/shippers/{{ summary.shipper.id }}">Manage</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+{% endblock %}

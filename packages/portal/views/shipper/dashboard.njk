@@ -1,0 +1,65 @@
+{% extends "layout/base.njk" %}
+
+{% block content %}
+  <section class="page-header">
+    <div>
+      <h1>Welcome, {{ shipper.name or shipper.companyName or shipper.email }}</h1>
+      <p>Track your shipping performance and manage fulfilment.</p>
+    </div>
+    <a class="button" href="/shipper/orders/new">Create order</a>
+  </section>
+
+  <section class="metrics">
+    <article>
+      <h2>Total orders</h2>
+      <strong>{{ metrics.total }}</strong>
+    </article>
+    <article>
+      <h2>Created</h2>
+      <strong>{{ metrics.created }}</strong>
+    </article>
+    <article>
+      <h2>In transit</h2>
+      <strong>{{ metrics.inTransit }}</strong>
+    </article>
+    <article>
+      <h2>Delivered</h2>
+      <strong>{{ metrics.delivered }}</strong>
+    </article>
+  </section>
+
+  <section>
+    <div class="section-heading">
+      <h2>Recent orders</h2>
+      <a href="/shipper/reports/orders.csv" class="link">Download CSV</a>
+    </div>
+    {% if orders|length == 0 %}
+      <p class="empty-state">No orders yet. Create your first order to get started.</p>
+    {% else %}
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Reference</th>
+              <th>Status</th>
+              <th>Tracking number</th>
+              <th>Created</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in orders %}
+              <tr>
+                <td>{{ order.reference }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.trackingNumber or 'Pending' }}</td>
+                <td>{{ formatDate(order.createdAt) }}</td>
+                <td><a class="link" href="/shipper/orders/{{ order.id }}">View</a></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "layout/base.njk" %}
+
+{% block content %}
+  <section class="card">
+    <h1>{{ isEdit and 'Update shipper' or 'Create shipper' }}</h1>
+    <form method="post" action="{{ action }}" class="form-grid">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+      <label>
+        Company name
+        <input type="text" name="companyName" required value="{{ values.companyName or '' }}" />
+      </label>
+      <label>
+        Contact name
+        <input type="text" name="name" required value="{{ values.name or '' }}" />
+      </label>
+      <label>
+        Email address
+        <input type="email" name="email" required value="{{ values.email or '' }}" />
+      </label>
+      <label>
+        Phone number
+        <input type="tel" name="phone" required value="{{ values.phone or '' }}" />
+      </label>
+      <label>
+        Password
+        <input type="password" name="password" {{ isEdit and '' or 'required' }} minlength="8" />
+      </label>
+      <button type="submit" class="button">{{ isEdit and 'Save changes' or 'Create shipper' }}</button>
+    </form>
+  </section>
+{% endblock %}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title or 'Courier Portal' }}</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="top-bar">
+      <div class="container">
+        <div class="brand">
+          <a href="/">Courier Portal</a>
+        </div>
+        <nav>
+          <ul>
+            {% if currentUser and currentUser.role == 'admin' %}
+              <li><a href="/admin">Dashboard</a></li>
+              <li><a href="/admin/shippers/new">New Shipper</a></li>
+              <li>
+                <form method="post" action="/admin/logout">
+                  <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                  <button type="submit" class="link-button">Sign out</button>
+                </form>
+              </li>
+            {% elif currentUser and currentUser.role == 'shipper' %}
+              <li><a href="/shipper">Dashboard</a></li>
+              <li><a href="/shipper/orders/new">Create Order</a></li>
+              <li><a href="/shipper/reports/orders.csv">Export Orders</a></li>
+              <li>
+                <form method="post" action="/shipper/logout">
+                  <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                  <button type="submit" class="link-button">Sign out</button>
+                </form>
+              </li>
+            {% else %}
+              <li><a href="/admin/login">Admin</a></li>
+              <li><a href="/shipper/login">Shipper</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="container">
+      {% if flashMessages %}
+        <div class="flash-messages">
+          {% for message in flashMessages %}
+            <div class="flash flash-{{ message.type }}">{{ message.message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; {{ now()[:4] }} Courier Portal. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>
